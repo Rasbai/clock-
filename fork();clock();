@@ -1,0 +1,67 @@
+#include<time.h>
+#include<stdio.h>
+#include<string.h>
+#include<stdlib.h>
+#include<sys/file.h>
+#include<sys/types.h>
+#include<unistd.h>
+
+int main(){
+double x,y,z,xo,yo,zo;
+int arr[10000]; //1000 to 10000 with difference of 1000 each test runs
+xo= clock(); //start outer clock
+int sum = 0;
+int pid;
+pid = fork(); //create a child process
+if(pid == 0) //begin child process
+{
+FILE *fp, *fout;
+x= clock(); // start the clock
+fp= fopen("test.dat", "r"); //to read the file
+fout= fopen("test2.dat", "w"); //to write out the file
+
+if(!fp)
+{
+printf(" Does not exist ");//if the file doesn't exist it will print this
+ return 0;
+}
+else
+{
+int i = 0;
+int size= sizeof(arr)/sizeof(int);
+while(i<size)
+{
+fscanf(fp, "%d", &arr[i]);
+i++;
+
+int k = i;
+while (k<size)
+{
+fscanf(fp, "%d", &arr[k]);
+sum = arr[i] + arr[k];
+k++;
+
+if(sum>1&&sum%2!=0&&sum%3!=0&&sum%4!=0&&sum%5!=0&&sum%6!=0&&sum%7!=0&&sum%8!=0&$
+fprintf(fout, "%d\n", sum);//print numbers that are prime into test2.dat
+}
+}
+fclose(fp); // was told to close it so junk doesn't get in
+}
+y = clock(); //end the clock function
+z= (y-x)/CLOCKS_PER_SEC; //clock function get time in seconds
+printf("\n\n TIME TOOK : %lf \n" , z);
+printf("Child says my pid= %d and my parent pid=%d \n\n",getpid(),getppid());
+_exit(0); //child terminates
+}
+if(pid<0)
+{ fprintf(stderr,"fork failed\n\n");
+exit(1);
+}
+//wait(&pid);
+printf("Parent says child pid = %d\n",pid);
+yo = clock();
+zo= (yo-xo)/CLOCKS_PER_SEC;
+printf("\n\n\n Outer Time: %1f \n\n\n", zo);
+
+return 0;
+}
